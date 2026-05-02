@@ -1,4 +1,4 @@
-# 📌 Kookmin Feed - Infrastructure Setup
+# 📌 Kookmin Claw- Infrastructure Setup
 
 ## 📖 프로젝트 소개
 Kookmin Feed 프로젝트는 학생들에게 필요한 공지사항을 수집하고 개인화된 피드 형태로 제공하는 서비스입니다.
