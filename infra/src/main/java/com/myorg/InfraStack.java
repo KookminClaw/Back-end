@@ -71,15 +71,71 @@ public class InfraStack extends Stack {
                 "systemctl enable mariadb",
                 "systemctl start mariadb",
 
-                // DB 생성
-                "mysql -e \"CREATE DATABASE IF NOT EXISTS kookminfeed;\"",
-
-                // 사용자 생성
+                // DB 및 사용자 생성
+                "mysql -e \"CREATE DATABASE IF NOT EXISTS kookminfeed CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\"",
                 "mysql -e \"CREATE USER IF NOT EXISTS 'kookmin'@'localhost' IDENTIFIED BY 'kookmin1234';\"",
-
-                // 권한
                 "mysql -e \"GRANT ALL PRIVILEGES ON kookminfeed.* TO 'kookmin'@'localhost';\"",
-                "mysql -e \"FLUSH PRIVILEGES;\""
+                "mysql -e \"FLUSH PRIVILEGES;\"",
+
+                // 스키마 초기화 (V1__init_schema.sql 인라인 실행)
+                "mysql kookminfeed << 'SQL_EOF'",
+                "CREATE TABLE IF NOT EXISTS department (",
+                "    code VARCHAR(20)  NOT NULL,",
+                "    name VARCHAR(100) NOT NULL,",
+                "    PRIMARY KEY (code)",
+                ");",
+
+                "CREATE TABLE IF NOT EXISTS user_profile (",
+                "    user_id                   CHAR(36)    NOT NULL,",
+                "    student_number            VARCHAR(20) NOT NULL,",
+                "    created_at                DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,",
+                "    updated_at                DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,",
+                "    profile_completion_rate   SMALLINT    NULL,",
+                "    grade                     SMALLINT    NOT NULL,",
+                "    department_code           VARCHAR(20) NOT NULL,",
+                "    enrollment_status         VARCHAR(20) NOT NULL DEFAULT 'enrolled',",
+                "    interest_keywords         JSON        NULL,",
+                "    career_goals              JSON        NULL,",
+                "    course_interests          JSON        NULL,",
+                "    extracurricular_interests JSON        NULL,",
+                "    scholarship_interest      BOOLEAN     NULL DEFAULT TRUE,",
+                "    notify_push               BOOLEAN     NOT NULL DEFAULT TRUE,",
+                "    notify_email              BOOLEAN     NOT NULL DEFAULT FALSE,",
+                "    notify_categories         JSON        NULL,",
+                "    last_active_at            DATETIME    NULL,",
+                "    PRIMARY KEY (user_id),",
+                "    UNIQUE KEY uq_student_number (student_number),",
+                "    CONSTRAINT fk_up_department FOREIGN KEY (department_code) REFERENCES department (code),",
+                "    CONSTRAINT chk_grade CHECK (grade BETWEEN 1 AND 5),",
+                "    CONSTRAINT chk_profile_completion CHECK (profile_completion_rate IS NULL OR profile_completion_rate BETWEEN 0 AND 100),",
+                "    CONSTRAINT chk_enrollment_status CHECK (enrollment_status IN ('enrolled', 'leave', 'graduated'))",
+                ");",
+
+                "CREATE TABLE IF NOT EXISTS notice (",
+                "    id           BIGINT       NOT NULL AUTO_INCREMENT,",
+                "    title        VARCHAR(500) NOT NULL,",
+                "    link         VARCHAR(1000) NOT NULL,",
+                "    published    DATETIME     NOT NULL,",
+                "    source       VARCHAR(200) NOT NULL,",
+                "    category     ENUM('학사','장학','비교과','취업','행사','기타') DEFAULT '기타',",
+                "    importance   TINYINT      DEFAULT 0,",
+                "    deadline     DATETIME,",
+                "    target_grade VARCHAR(20),",
+                "    PRIMARY KEY (id),",
+                "    UNIQUE KEY uq_link (link(255))",
+                ");",
+
+                "CREATE TABLE IF NOT EXISTS notice_detail (",
+                "    id        BIGINT   NOT NULL AUTO_INCREMENT,",
+                "    notice_id BIGINT   NOT NULL,",
+                "    body      LONGTEXT,",
+                "    attachments TEXT,",
+                "    summary   TEXT,",
+                "    PRIMARY KEY (id),",
+                "    UNIQUE KEY uq_notice (notice_id),",
+                "    CONSTRAINT fk_nd_notice FOREIGN KEY (notice_id) REFERENCES notice (id)",
+                ");",
+                "SQL_EOF"
         );
 
         CfnOutput.Builder.create(this, "EC2PublicIp")
