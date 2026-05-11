@@ -10,7 +10,7 @@ Kookmin claw 프로젝트는 학생들에게 필요한 공지사항을 수집하
 ## ⚙️ 기술 스택
 
 - **Backend**: Spring Boot / Java
-- **Database**: MySQL (MariaDB on EC2)
+- **Database**: PostgreSQL 15 + pgvector (on EC2)
 - **Cloud**: AWS
 - **Infrastructure as Code**: AWS CDK (Java)
 - **Server**: Amazon EC2 (t3.micro)
@@ -28,7 +28,23 @@ AWS CDK(Java)를 사용하여 다음 리소스를 생성했습니다.
 - Security Group
 - EC2 Instance
 - nginx 웹 서버
-- EC2 내부 MariaDB (MySQL 호환 DB)
+- EC2 내부 PostgreSQL 15 (pgvector 확장 포함)
+
+---
+
+## 🗄️ DB 스키마
+
+PostgreSQL 15 + pgvector 기반으로 구성되며, 마이그레이션 파일은 `db/migration/`에 위치합니다.
+
+| 테이블 | 설명 |
+|---|---|
+| `department` | 학과 마스터 |
+| `user_profile` | 사용자 프로필 및 개인화 추천 데이터 |
+| `notice` | 공지 목록 (크롤링 수집) |
+| `notice_detail` | 공지 상세 본문 및 AI 요약 |
+
+- `user_profile.keyword_embedding` : `VECTOR(768)` — 관심 키워드 임베딩 (pgvector)
+- DB명: `kookminfeed` / 접속 유저: `kookmin`
 
 ---
 

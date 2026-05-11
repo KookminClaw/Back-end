@@ -67,19 +67,91 @@ public class InfraStack extends Stack {
                 "systemctl enable nginx",
                 "systemctl start nginx",
 
-                "dnf install -y mariadb105-server",
-                "systemctl enable mariadb",
-                "systemctl start mariadb",
+                // PostgreSQL 15 설치
+                "dnf install -y postgresql15-server postgresql15",
+                "postgresql-setup --initdb",
+                "systemctl enable postgresql",
+                "systemctl start postgresql",
 
-                // DB 생성
-                "mysql -e \"CREATE DATABASE IF NOT EXISTS kookminfeed;\"",
+                // pgvector 빌드 및 설치
+                "dnf install -y gcc make postgresql15-devel git",
+                "cd /tmp && git clone https://github.com/pgvector/pgvector.git",
+                "cd /tmp/pgvector && make && make install",
 
-                // 사용자 생성
-                "mysql -e \"CREATE USER IF NOT EXISTS 'kookmin'@'localhost' IDENTIFIED BY 'kookmin1234';\"",
+                // DB 및 사용자 생성
+                "sudo -u postgres psql -c \"CREATE DATABASE kookminfeed;\"",
+                "sudo -u postgres psql -c \"CREATE USER kookmin WITH PASSWORD 'kookmin1234';\"",
+                "sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE kookminfeed TO kookmin;\"",
+                "sudo -u postgres psql -d kookminfeed -c \"GRANT ALL ON SCHEMA public TO kookmin;\"",
 
-                // 권한
-                "mysql -e \"GRANT ALL PRIVILEGES ON kookminfeed.* TO 'kookmin'@'localhost';\"",
-                "mysql -e \"FLUSH PRIVILEGES;\""
+                // 스키마 초기화
+                "sudo -u postgres psql -d kookminfeed << 'SQL_EOF'",
+                "CREATE EXTENSION IF NOT EXISTS vector;",
+
+                "CREATE TABLE IF NOT EXISTS department (",
+                "    code VARCHAR(20)  NOT NULL,",
+                "    name VARCHAR(100) NOT NULL,",
+                "    PRIMARY KEY (code)",
+                ");",
+
+                "CREATE TABLE IF NOT EXISTS user_profile (",
+                "    user_id                   UUID        NOT NULL DEFAULT gen_random_uuid(),",
+                "    student_number            VARCHAR(20) NOT NULL,",
+                "    created_at                TIMESTAMPTZ NOT NULL DEFAULT NOW(),",
+                "    updated_at                TIMESTAMPTZ NOT NULL DEFAULT NOW(),",
+                "    profile_completion_rate   SMALLINT    NULL,",
+                "    grade                     SMALLINT    NOT NULL,",
+                "    department_code           VARCHAR(20) NOT NULL,",
+                "    enrollment_status         VARCHAR(20) NOT NULL DEFAULT 'enrolled',",
+                "    interest_keywords         TEXT[]      NULL,",
+                "    career_goals              TEXT[]      NULL,",
+                "    course_interests          TEXT[]      NULL,",
+                "    extracurricular_interests TEXT[]      NULL,",
+                "    scholarship_interest      BOOLEAN     NULL DEFAULT TRUE,",
+                "    notify_push               BOOLEAN     NOT NULL DEFAULT TRUE,",
+                "    notify_email              BOOLEAN     NOT NULL DEFAULT FALSE,",
+                "    notify_categories         TEXT[]      NULL,",
+                "    keyword_embedding         VECTOR(768) NULL,",
+                "    last_active_at            TIMESTAMPTZ NULL,",
+                "    PRIMARY KEY (user_id),",
+                "    UNIQUE (student_number),",
+                "    CONSTRAINT fk_up_department FOREIGN KEY (department_code) REFERENCES department (code),",
+                "    CONSTRAINT chk_grade CHECK (grade BETWEEN 1 AND 5),",
+                "    CONSTRAINT chk_profile_completion CHECK (profile_completion_rate IS NULL OR profile_completion_rate BETWEEN 0 AND 100),",
+                "    CONSTRAINT chk_enrollment_status CHECK (enrollment_status IN ('enrolled', 'leave', 'graduated'))",
+                ");",
+
+                "CREATE OR REPLACE FUNCTION set_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW(); RETURN NEW; END; $$ LANGUAGE plpgsql;",
+                "CREATE TRIGGER trg_user_profile_updated_at BEFORE UPDATE ON user_profile FOR EACH ROW EXECUTE FUNCTION set_updated_at();",
+                "CREATE INDEX IF NOT EXISTS idx_up_keyword_embedding ON user_profile USING ivfflat (keyword_embedding vector_cosine_ops);",
+
+                "CREATE TYPE notice_category AS ENUM ('학사','장학','비교과','취업','행사','기타');",
+
+                "CREATE TABLE IF NOT EXISTS notice (",
+                "    id           BIGSERIAL       NOT NULL,",
+                "    title        VARCHAR(500)    NOT NULL,",
+                "    link         VARCHAR(1000)   NOT NULL,",
+                "    published    TIMESTAMPTZ     NOT NULL,",
+                "    source       VARCHAR(200)    NOT NULL,",
+                "    category     notice_category DEFAULT '기타',",
+                "    importance   SMALLINT        DEFAULT 0,",
+                "    deadline     TIMESTAMPTZ,",
+                "    target_grade VARCHAR(20),",
+                "    PRIMARY KEY (id),",
+                "    UNIQUE (link)",
+                ");",
+
+                "CREATE TABLE IF NOT EXISTS notice_detail (",
+                "    id        BIGSERIAL NOT NULL,",
+                "    notice_id BIGINT    NOT NULL,",
+                "    body      TEXT,",
+                "    attachments TEXT,",
+                "    summary   TEXT,",
+                "    PRIMARY KEY (id),",
+                "    UNIQUE (notice_id),",
+                "    CONSTRAINT fk_nd_notice FOREIGN KEY (notice_id) REFERENCES notice (id)",
+                ");",
+                "SQL_EOF"
         );
 
         CfnOutput.Builder.create(this, "EC2PublicIp")
