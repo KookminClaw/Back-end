@@ -1,4 +1,4 @@
-package com.kookminclaw.profile;
+package com.kookminclaw.backend.profile;
 
 import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;

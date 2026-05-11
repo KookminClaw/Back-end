@@ -1,4 +1,4 @@
-package com.kookminclaw.profile.dto;
+package com.kookminclaw.backend.profile.dto;
 
 import jakarta.validation.constraints.*;
 

@@ -1,4 +1,4 @@
-package com.kookminclaw.department;
+package com.kookminclaw.backend.department;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

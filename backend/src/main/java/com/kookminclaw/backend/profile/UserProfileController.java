@@ -1,7 +1,7 @@
-package com.kookminclaw.profile;
+package com.kookminclaw.backend.profile;
 
-import com.kookminclaw.profile.dto.ProfileCreateRequest;
-import com.kookminclaw.profile.dto.ProfileResponse;
+import com.kookminclaw.backend.profile.dto.ProfileCreateRequest;
+import com.kookminclaw.backend.profile.dto.ProfileResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

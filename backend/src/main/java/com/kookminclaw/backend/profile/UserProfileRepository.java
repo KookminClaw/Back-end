@@ -1,4 +1,4 @@
-package com.kookminclaw.profile;
+package com.kookminclaw.backend.profile;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

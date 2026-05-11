@@ -1,13 +1,14 @@
-package com.kookminclaw.profile;
+package com.kookminclaw.backend.profile;
 
-import com.kookminclaw.profile.dto.ProfileCreateRequest;
-import com.kookminclaw.profile.dto.ProfileResponse;
+import com.kookminclaw.backend.profile.dto.ProfileCreateRequest;
+import com.kookminclaw.backend.profile.dto.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -42,12 +43,12 @@ public class UserProfileService {
 
     @Transactional(readOnly = true)
     public ProfileResponse get(UUID userId) {
-        UserProfile profile = repository.findById(userId)
+        return repository.findById(userId)
+                .map(ProfileResponse::from)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "프로필을 찾을 수 없습니다."));
-        return ProfileResponse.from(profile);
     }
 
-    private String[] toArray(java.util.List<String> list) {
+    private String[] toArray(List<String> list) {
         return list == null ? null : list.toArray(String[]::new);
     }
 }

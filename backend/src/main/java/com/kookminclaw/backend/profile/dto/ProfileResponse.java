@@ -1,6 +1,6 @@
-package com.kookminclaw.profile.dto;
+package com.kookminclaw.backend.profile.dto;
 
-import com.kookminclaw.profile.UserProfile;
+import com.kookminclaw.backend.profile.UserProfile;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
