@@ -42,13 +42,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            pkill -f "backend.*SNAPSHOT" || true
-            sleep 2
             cp /home/ec2-user/deploy/backend/build/libs/backend-0.0.1-SNAPSHOT.jar \
                /home/ec2-user/app/backend/build/libs/backend-0.0.1-SNAPSHOT.jar
-            export DB_URL="jdbc:postgresql://localhost:5432/kookminfeed"
-            export DB_USERNAME="kookmin"
-            export DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
-            nohup java -jar /home/ec2-user/app/backend/build/libs/backend-0.0.1-SNAPSHOT.jar \
-              > /home/ec2-user/app.log 2>&1 &
-            echo "Deploy done. PID: $!"
+            sudo systemctl restart kookminfeed
+            echo "Deploy done."
