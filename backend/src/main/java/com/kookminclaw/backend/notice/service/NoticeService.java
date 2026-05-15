@@ -43,7 +43,7 @@ public class NoticeService {
 
     public NoticeDetailResponse getNoticeDetail(Long id) {
         Notice notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("공지 없음"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "공지 없음"));
 
         NoticeDetail detail = noticeDetailRepository.findByNoticeId(id)
                 .orElse(null);
