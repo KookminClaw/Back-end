@@ -2,6 +2,7 @@ package com.kookminclaw.backend.profile;
 
 import com.kookminclaw.backend.profile.dto.ProfileCreateRequest;
 import com.kookminclaw.backend.profile.dto.ProfileResponse;
+import com.kookminclaw.backend.profile.dto.ProfileUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,36 @@ public class UserProfileService {
         return repository.findById(userId)
                 .map(ProfileResponse::from)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "프로필을 찾을 수 없습니다."));
+    }
+
+    @Transactional
+    public ProfileResponse update(UUID userId, ProfileUpdateRequest req) {
+        UserProfile profile = repository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "프로필을 찾을 수 없습니다."));
+
+        profile.update(
+                req.grade(),
+                req.departmentCode(),
+                req.enrollmentStatus(),
+                toArray(req.interestKeywords()),
+                toArray(req.careerGoals()),
+                toArray(req.courseInterests()),
+                toArray(req.extracurricularInterests()),
+                req.scholarshipInterest(),
+                req.notifyPush(),
+                req.notifyEmail(),
+                toArray(req.notifyCategories())
+        );
+
+        return ProfileResponse.from(profile);
+    }
+
+    @Transactional
+    public void delete(UUID userId) {
+        if (!repository.existsById(userId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "프로필을 찾을 수 없습니다.");
+        }
+        repository.deleteById(userId);
     }
 
     private String[] toArray(List<String> list) {

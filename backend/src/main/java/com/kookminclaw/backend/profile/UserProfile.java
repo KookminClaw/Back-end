@@ -98,6 +98,23 @@ public class UserProfile {
         return (short) (filled * 100 / 6);
     }
 
+    public void update(Short grade, String departmentCode, String enrollmentStatus,
+                       String[] interestKeywords, String[] careerGoals, String[] courseInterests,
+                       String[] extracurricularInterests, Boolean scholarshipInterest,
+                       Boolean notifyPush, Boolean notifyEmail, String[] notifyCategories) {
+        if (grade != null) this.grade = grade;
+        if (departmentCode != null) this.departmentCode = departmentCode;
+        if (enrollmentStatus != null) this.enrollmentStatus = enrollmentStatus;
+        if (interestKeywords != null) this.interestKeywords = interestKeywords;
+        if (careerGoals != null) this.careerGoals = careerGoals;
+        if (courseInterests != null) this.courseInterests = courseInterests;
+        if (extracurricularInterests != null) this.extracurricularInterests = extracurricularInterests;
+        if (scholarshipInterest != null) this.scholarshipInterest = scholarshipInterest;
+        if (notifyPush != null) this.notifyPush = notifyPush;
+        if (notifyEmail != null) this.notifyEmail = notifyEmail;
+        if (notifyCategories != null) this.notifyCategories = notifyCategories;
+    }
+
     @Builder
     public UserProfile(String studentNumber, Short grade, String departmentCode,
                        String enrollmentStatus, String[] interestKeywords, String[] careerGoals,

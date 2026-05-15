@@ -3,6 +3,7 @@ package com.kookminclaw.backend.notice.controller;
 import com.kookminclaw.backend.notice.dto.NoticeCreateRequest;
 import com.kookminclaw.backend.notice.dto.NoticeDetailResponse;
 import com.kookminclaw.backend.notice.dto.NoticeResponse;
+import com.kookminclaw.backend.notice.dto.NoticeUpdateRequest;
 import com.kookminclaw.backend.notice.service.NoticeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,5 +46,27 @@ public class NoticeController {
     @ResponseStatus(HttpStatus.CREATED)
     public Long createNotice(@RequestBody NoticeCreateRequest request) {
         return noticeService.createNotice(request);
+    }
+
+    @Operation(summary = "공지 수정", description = "공지 id로 공지 내용을 수정합니다. 전달한 필드만 업데이트됩니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "수정 성공"),
+            @ApiResponse(responseCode = "404", description = "공지 없음")
+    })
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateNotice(@PathVariable Long id, @RequestBody NoticeUpdateRequest request) {
+        noticeService.updateNotice(id, request);
+    }
+
+    @Operation(summary = "공지 삭제", description = "공지 id로 공지를 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "삭제 성공"),
+            @ApiResponse(responseCode = "404", description = "공지 없음")
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteNotice(@PathVariable Long id) {
+        noticeService.deleteNotice(id);
     }
 }
