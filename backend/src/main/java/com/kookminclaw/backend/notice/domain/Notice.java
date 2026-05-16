@@ -11,7 +11,12 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "notice")
+@Table(
+        name = "notice",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_notice_link", columnNames = "link")
+        }
+)
 public class Notice {
 
     @Id
@@ -21,7 +26,7 @@ public class Notice {
     @Column(nullable = false, length = 500)
     private String title;
 
-    @Column(nullable = false, unique = true, length = 1000)
+    @Column(nullable = false, length = 1000)
     private String link;
 
     @Column(nullable = false)
@@ -43,6 +48,26 @@ public class Notice {
     @Column(name = "target_grade", length = 20)
     private String targetGrade;
 
+    @Column(name = "collected_at", nullable = false)
+    private OffsetDateTime collectedAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
     @OneToOne(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private NoticeDetail detail;
+
+    @PrePersist
+    void prePersist() {
+        OffsetDateTime now = OffsetDateTime.now();
+        if (collectedAt == null) {
+            collectedAt = now;
+        }
+        updatedAt = now;
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        updatedAt = OffsetDateTime.now();
+    }
 }
