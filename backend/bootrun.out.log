@@ -1,0 +1,1392 @@
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :resolveMainClassName UP-TO-DATE
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.5)
+
+2026-05-16T20:32:40.565+09:00  INFO 13344 --- [           main] c.k.backend.BackendApplication           : Starting BackendApplication using Java 21.0.11 with PID 13344 (C:\Backend\hello-spring\Back-end\backend\build\classes\java\main started by psh09 in C:\Backend\hello-spring\Back-end\backend)
+2026-05-16T20:32:40.568+09:00  INFO 13344 --- [           main] c.k.backend.BackendApplication           : No active profile set, falling back to 1 default profile: "default"
+2026-05-16T20:32:41.328+09:00  INFO 13344 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-16T20:32:41.388+09:00  INFO 13344 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 51 ms. Found 2 JPA repository interfaces.
+2026-05-16T20:32:41.881+09:00  INFO 13344 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-05-16T20:32:41.903+09:00  INFO 13344 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-05-16T20:32:41.904+09:00  INFO 13344 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-05-16T20:32:41.977+09:00  INFO 13344 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-05-16T20:32:41.978+09:00  INFO 13344 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1365 ms
+2026-05-16T20:32:42.121+09:00  INFO 13344 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-16T20:32:42.178+09:00  INFO 13344 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-05-16T20:32:42.211+09:00  INFO 13344 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-05-16T20:32:42.512+09:00  INFO 13344 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-16T20:32:42.544+09:00  INFO 13344 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-05-16T20:32:42.740+09:00  INFO 13344 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6cbdd1c5
+2026-05-16T20:32:42.742+09:00  INFO 13344 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-05-16T20:32:43.707+09:00  INFO 13344 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-16T20:32:43.754+09:00  INFO 13344 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-16T20:32:43.987+09:00  INFO 13344 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-05-16T20:32:44.502+09:00  WARN 13344 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-16T20:32:44.865+09:00  INFO 13344 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-05-16T20:32:44.876+09:00  INFO 13344 --- [           main] c.k.backend.BackendApplication           : Started BackendApplication in 4.725 seconds (process running for 5.097)
+2026-05-16T20:33:21.871+09:00  INFO 13344 --- [nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-16T20:33:21.872+09:00  INFO 13344 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-05-16T20:33:21.873+09:00  INFO 13344 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    insert 
+    into
+        notice
+        (category, collected_at, deadline, importance, link, published, source, target_grade, title, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+    returning id
+Hibernate: 
+    insert 
+    into
+        notice_detail
+        (attachments, body, notice_id, summary) 
+    values
+        (?, ?, ?, ?) 
+    returning id
+2026-05-16T20:33:34.256+09:00  INFO 13344 --- [nio-8080-exec-2] c.k.b.n.crawler.NoticeCollectService     : Notice collection finished. savedCount=20, duplicateCount=0, failedCount=0
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+Hibernate: 
+    select
+        count(n1_0.id)>0 
+    from
+        notice n1_0 
+    where
+        n1_0.link=?
+2026-05-16T20:33:54.008+09:00  INFO 13344 --- [nio-8080-exec-4] c.k.b.n.crawler.NoticeCollectService     : Notice collection finished. savedCount=0, duplicateCount=20, failedCount=0
+Hibernate: 
+    select
+        n1_0.id,
+        n1_0.category,
+        n1_0.collected_at,
+        n1_0.deadline,
+        n1_0.importance,
+        n1_0.link,
+        n1_0.published,
+        n1_0.source,
+        n1_0.target_grade,
+        n1_0.title,
+        n1_0.updated_at 
+    from
+        notice n1_0
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        n1_0.id,
+        n1_0.category,
+        n1_0.collected_at,
+        n1_0.deadline,
+        n1_0.importance,
+        n1_0.link,
+        n1_0.published,
+        n1_0.source,
+        n1_0.target_grade,
+        n1_0.title,
+        n1_0.updated_at 
+    from
+        notice n1_0
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        n1_0.id,
+        n1_0.category,
+        n1_0.collected_at,
+        n1_0.deadline,
+        n1_0.importance,
+        n1_0.link,
+        n1_0.published,
+        n1_0.source,
+        n1_0.target_grade,
+        n1_0.title,
+        n1_0.updated_at 
+    from
+        notice n1_0
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+Hibernate: 
+    select
+        nd1_0.id,
+        nd1_0.attachments,
+        nd1_0.body,
+        nd1_0.notice_id,
+        nd1_0.summary 
+    from
+        notice_detail nd1_0 
+    where
+        nd1_0.notice_id=?
+
+> Task :bootRun FAILED
+
+[Incubating] Problems report is available at: file:///C:/Backend/hello-spring/Back-end/backend/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+4 actionable tasks: 1 executed, 3 up-to-date

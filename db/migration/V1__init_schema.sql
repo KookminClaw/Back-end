@@ -91,9 +91,11 @@ CREATE TABLE IF NOT EXISTS notice (
     importance   SMALLINT              DEFAULT 0,
     deadline     TIMESTAMPTZ,
     target_grade VARCHAR(20),
+    collected_at TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+    updated_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
 
     PRIMARY KEY (id),
-    UNIQUE (link)
+    CONSTRAINT uk_notice_link UNIQUE (link)
 );
 
 -- ------------------------------------------------------------
