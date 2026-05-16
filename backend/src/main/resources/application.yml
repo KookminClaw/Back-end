@@ -1,18 +1,17 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/kookmin_claw
-    username: postgres
-    password: 040924
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/kookminfeed}
+    username: ${DB_USERNAME:kookmin}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: validate
-
-    show-sql: true
-
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
+    show-sql: false
 
 server:
   port: 8080

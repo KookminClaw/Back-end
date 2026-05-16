@@ -6,10 +6,14 @@ import com.kookminclaw.backend.notice.domain.NoticeDetail;
 import com.kookminclaw.backend.notice.dto.NoticeCreateRequest;
 import com.kookminclaw.backend.notice.dto.NoticeDetailResponse;
 import com.kookminclaw.backend.notice.dto.NoticeResponse;
+import com.kookminclaw.backend.notice.dto.NoticeUpdateRequest;
 import com.kookminclaw.backend.notice.repository.NoticeDetailRepository;
 import com.kookminclaw.backend.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -39,7 +43,7 @@ public class NoticeService {
 
     public NoticeDetailResponse getNoticeDetail(Long id) {
         Notice notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("공지 없음"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "공지 없음"));
 
         NoticeDetail detail = noticeDetailRepository.findByNoticeId(id)
                 .orElse(null);
@@ -92,5 +96,35 @@ public class NoticeService {
         noticeDetailRepository.save(detail);
 
         return savedNotice.getId();
+    }
+
+    @Transactional
+    public void updateNotice(Long id, NoticeUpdateRequest request) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "공지 없음"));
+
+        if (request.title() != null) notice.setTitle(request.title());
+        if (request.link() != null) notice.setLink(request.link());
+        if (request.published() != null) notice.setPublished(request.published());
+        if (request.source() != null) notice.setSource(request.source());
+        if (request.category() != null) notice.setCategory(request.category());
+        if (request.importance() != null) notice.setImportance(request.importance());
+        if (request.deadline() != null) notice.setDeadline(request.deadline());
+        if (request.targetGrade() != null) notice.setTargetGrade(request.targetGrade());
+
+        NoticeDetail detail = noticeDetailRepository.findByNoticeId(id).orElse(null);
+        if (detail != null) {
+            if (request.body() != null) detail.setBody(request.body());
+            if (request.attachments() != null) detail.setAttachments(request.attachments());
+            if (request.summary() != null) detail.setSummary(request.summary());
+        }
+    }
+
+    @Transactional
+    public void deleteNotice(Long id) {
+        if (!noticeRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "공지 없음");
+        }
+        noticeRepository.deleteById(id);
     }
 }

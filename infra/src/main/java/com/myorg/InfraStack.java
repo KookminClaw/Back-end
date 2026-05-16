@@ -7,10 +7,14 @@ import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.constructs.Construct;
 
+import software.amazon.awscdk.services.ec2.CfnEIP;
+import software.amazon.awscdk.services.ec2.CfnEIPAssociation;
 import software.amazon.awscdk.services.ec2.Instance;
 import software.amazon.awscdk.services.ec2.InstanceClass;
 import software.amazon.awscdk.services.ec2.InstanceSize;
 import software.amazon.awscdk.services.ec2.InstanceType;
+import software.amazon.awscdk.services.ec2.IKeyPair;
+import software.amazon.awscdk.services.ec2.KeyPair;
 import software.amazon.awscdk.services.ec2.MachineImage;
 import software.amazon.awscdk.services.ec2.Peer;
 import software.amazon.awscdk.services.ec2.Port;
@@ -45,17 +49,18 @@ public class InfraStack extends Stack {
                 .allowAllOutbound(true)
                 .build();
 
-        securityGroup.addIngressRule(
-                Peer.anyIpv4(),
-                Port.tcp(80),
-                "Allow HTTP access"
-        );
+        securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(22),   "Allow SSH access");
+        securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(80),   "Allow HTTP access");
+        securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(8080), "Allow Spring Boot access");
+
+        IKeyPair keyPair = KeyPair.fromKeyPairName(this, "KookminKeyPair", "kookminclaw-key");
 
         Instance instance = Instance.Builder.create(this, "KookminFeedEc2")
                 .vpc(vpc)
                 .instanceType(InstanceType.of(InstanceClass.T3, InstanceSize.MICRO))
                 .machineImage(MachineImage.latestAmazonLinux2023())
                 .securityGroup(securityGroup)
+                .keyPair(keyPair)
                 .vpcSubnets(SubnetSelection.builder()
                         .subnetType(SubnetType.PUBLIC)
                         .build())
@@ -154,12 +159,22 @@ public class InfraStack extends Stack {
                 "SQL_EOF"
         );
 
+        // 탄력적 IP 생성 및 EC2에 연결
+        CfnEIP eip = CfnEIP.Builder.create(this, "KookminFeedEIP")
+                .domain("vpc")
+                .build();
+
+        CfnEIPAssociation.Builder.create(this, "KookminFeedEIPAssociation")
+                .instanceId(instance.getInstanceId())
+                .allocationId(eip.getAttrAllocationId())
+                .build();
+
         CfnOutput.Builder.create(this, "EC2PublicIp")
-                .value(instance.getInstancePublicIp())
+                .value(eip.getRef())
                 .build();
 
         CfnOutput.Builder.create(this, "EC2Url")
-                .value("http://" + instance.getInstancePublicIp())
+                .value("http://" + eip.getRef() + ":8080")
                 .build();
     }
 }
